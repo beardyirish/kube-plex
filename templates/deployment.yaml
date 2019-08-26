@@ -121,7 +121,7 @@ spec:
         {{- if .Values.persistence.config.subPath }}
           subPath: {{ .Values.persistence.config.subPath }}
         {{ end }}
-        - name: transcode
+        - name: config
           mountPath: /transcode
         {{- if .Values.persistence.transcode.subPath }}
           subPath: {{ .Values.persistence.transcode.subPath }}
@@ -136,18 +136,18 @@ spec:
     {{- end }}
       volumes:
       - name: data
-        persistentVolumeClaim:
+        hostPath:
 {{- if .Values.persistence.data.claimName }}
-          claimName: "{{ .Values.persistence.data.claimName }}"
+          path: "{{ .Values.persistence.data.claimName }}"
 {{- else }}
-          claimName: "{{ template "fullname" . }}-data"
+          path: "{{ template "fullname" . }}-data"
 {{- end }}
       - name: config
-        persistentVolumeClaim:
+        hostPath:
 {{- if .Values.persistence.config.claimName }}
-          claimName: "{{ .Values.persistence.config.claimName }}"
+          path: "{{ .Values.persistence.config.claimName }}"
 {{- else }}
-          claimName: "{{ template "fullname" . }}-config"
+          path: "{{ template "fullname" . }}-config"
 {{- end }}
       - name: transcode
 {{- if .Values.persistence.transcode.enabled }}
